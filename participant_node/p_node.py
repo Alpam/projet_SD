@@ -23,11 +23,11 @@ def p_work():
     time.sleep(time_sleep/100.0)
     return value_transaction
 
-def p_life():
-    return random.randint(20,100)
+def p_life(x,y):
+    return random.randint(x,y)
 
 if __name__ == '__main__' :
-    life = p_life()
+    life = p_life(20,100)
     print(life)
     while(life):
         life -= 1
