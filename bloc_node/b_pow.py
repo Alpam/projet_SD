@@ -32,6 +32,7 @@ def proof_of_work(string,required):
     return h
 
 def generate_hash(string):
+    string = string.encode('utf-8')
     h = hashlib.sha512(bytes(string))
     return h.hexdigest()
 
@@ -47,5 +48,5 @@ def wrong_hash(string,required):
     return True
 
 if __name__ == '__main__' :
-    str = "N100"
-    print("result ::"+proof_of_work(str,6))
+    string = "N100"
+    print("result ::"+proof_of_work(string,6))

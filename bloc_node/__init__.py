@@ -14,4 +14,5 @@
 
 #!/usr/bin/python3
 
-from . import p_node
+from . import bloc_chain
+from . import b_pow
