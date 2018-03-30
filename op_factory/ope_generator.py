@@ -19,6 +19,8 @@ def m_builder(nb_op,exp,tra,dest=None,value=None):
     if(tra == 'T'):
         message = message + "P" + str(dest[0]) + "B" + str(dest[1]) \
                 + ":" + str(value)
+    if(tra == 'E'):
+        message = message + str(value)
     return message
 
 
