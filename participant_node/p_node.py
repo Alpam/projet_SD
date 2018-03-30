@@ -36,26 +36,26 @@ def cmp_dstnt(a,b):
 
 #simule un participant : dort x miliseconde (meilleur simulation ever)
 def p_slp(slp):
-    time_sleep = random.randint(slp[0],slp[1])
-    time.sleep(time_sleep/100.0)
+    if(type(slp)==list):
+        time_sleep = random.randint(slp[0],slp[1])
+        time.sleep(time_sleep)
+    else :
+        time.sleep(slp)
 
-#simule décision d'un participant
-def p_trans(vl):
-    value_transaction = random.randint(vl[0],vl[1])
-    return value_transaction
-
-#détermine aléatoirement la vie d'un participant (nombre de 
-#transactions au totale)
-def p_life(x,y):
-    return random.randint(x,y)
+#simule renvoit un nombre aleatorie entre les bornes données dans vl
+#si vl n'est pas une liste, renvoie vl
+def p_random(vl):
+    if(type(vl)==list):
+        vl = random.randint(vl[0],vl[1])
+    return vl
 
 if __name__ == '__main__' :
-    life = p_life(1,1)
+    life = p_random(1,1)
     print(life)
     while(life):
         life -= 1
         p_slp([1,75])
-        print(p_trans([1,100]))
+        print(p_random([1,100]))
     d = [0,0]
     b = [0,0]
     c = [1,2]
