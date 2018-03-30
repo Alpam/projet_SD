@@ -13,53 +13,43 @@
 ############################################################
 
 #!/usr/bin/python3
-
-from bloc_node import bloc_chain as bc, b_pow as bp
-from participant_node import p_node as pn
-from threading import Thread, RLock
 from queue import *
+from participant_node import p_manager as pm
+from participant_node import p_node as pn
+from participant_node import ope_generator as og
 
-class Slave(Thread):
-
-    def __init__(self,nom,queue):
-        Thread.__init__(self)
-        self.nom = nom+":"
-        self.q = queue
-        self.lock = RLock()
-
-    def run(self):
-        self.lock.acquire(False)
-        life = 3
-        while(life):
-            message = self.nom+"M"+str(life)+":"+str(pn.p_work())
-            self.q.put(message)
-            life -= 1
-        self.lock.release()
-
-class Master(Thread):
-
-    def __init__(self,queue,slaves,list_operations):
-        Thread.__init__(self)
-        self.q = queue
-        self.ss = slaves
-        self.ope = list_operations
-
-    def run(self):
-
-        while(len(self.ss) or not(self.q.empty())):
-            self.ope.append(self.q.get())
-            for s in self.ss:
-                if(s.lock.acquire()):
-                    self.ss.remove(s)
-            
 if __name__ == '__main__' :
-    queue = Queue()
-    list_operations = []
-    slaves = [Slave("S1",queue), Slave("S2",queue)]
-    master = Master(queue, slaves,list_operations)
-    for s in slaves:
-        s.start()
-    master.start()
-    master.join()
-    print(list_operations)
+    print("::::test p_node::::")
+    life = pn.p_random(1)
+    print(life)
+    while(life):
+        life -= 1
+        pn.p_slp([0.01,0.075])
+        print(pn.p_random([1,100]))
+    d = [0,0]
+    b = [0,0]
+    c = [1,2]
+    print(pn.cmp_dstnt(d,b))
+    print(pn.cmp_dstnt(b,c))
+    print(pn.p_dstnt([b,c,[4,5],[5,6]],[5,6]))
+    print(pn.p_dstnt([b],b))
 
+    print("\n::::test m_operation::::")
+    print(og.m_builder(0,[1,1],'C'))
+    print(og.m_builder(0,[1,0],'T',[2,1],14))
+
+    print("\n::::test p_manager::::")
+    queue = Queue()
+    l_ope = []
+    destination = []
+    m = pm.Manager(queue, destination, 0, 4, 4)
+    m.start()
+    while(True):
+        try :
+            tmp = queue.get(True,1)
+        except Empty :
+            print('fin')
+            break
+        l_ope.append(tmp)
+    for i in l_ope:
+        print(i)

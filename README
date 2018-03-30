@@ -1,2 +1,9 @@
 Projet de SD
 
+
+Notes diverses:
+
+Les classes List() et Dict() sont threads safes dans le sens où la 
+machine virtuel python gère l'accès concurrent de ces objets (bien que
+le objet contenu ne le sont pas).
+ex : liste.remove(x) est thread safe alors que liste[0]=x ne l'est pas.

@@ -34,10 +34,11 @@ def cmp_dstnt(a,b):
         return True
     return False
 
-#simule un participant : dort x miliseconde (meilleur simulation ever)
+#simule un participant : dort x seconde (meilleur simulation ever)
+#precision maximale est de l'ordre de la miliseconde
 def p_slp(slp):
     if(type(slp)==list):
-        time_sleep = random.randint(slp[0],slp[1])
+        time_sleep = random.uniform(slp[0],slp[1])
         time.sleep(time_sleep)
     else :
         time.sleep(slp)
@@ -49,17 +50,4 @@ def p_random(vl):
         vl = random.randint(vl[0],vl[1])
     return vl
 
-if __name__ == '__main__' :
-    life = p_random(1,1)
-    print(life)
-    while(life):
-        life -= 1
-        p_slp([1,75])
-        print(p_random([1,100]))
-    d = [0,0]
-    b = [0,0]
-    c = [1,2]
-    print(cmp_dstnt(d,b))
-    print(cmp_dstnt(b,c))
-    print(p_dstnt([b,c,[4,5],[5,6]],[5,6]))
-    print(p_dstnt([b],b))
+

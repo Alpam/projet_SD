@@ -15,3 +15,4 @@
 #!/usr/bin/python3
 
 from . import p_node
+from .m_operation import ope_generator

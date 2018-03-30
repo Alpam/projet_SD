@@ -17,10 +17,12 @@
 import random
 import hashlib
 
-
-def proof_of_work(string,required):
+#
+def proof_of_work(string,required,flag):
     work = True
     while(work):
+        if(flag):
+            return False
         nonce = ""
         i=32
         while(i):
@@ -29,13 +31,15 @@ def proof_of_work(string,required):
             nonce = nonce+chr(c)
         h = generate_hash(string+nonce)
         work = wrong_hash(h,required)
-    return h
+    return h,nonce
 
+#genere un hash à partir d'une string, retourne une string
 def generate_hash(string):
     string = string.encode('utf-8')
     h = hashlib.sha512(bytes(string))
     return h.hexdigest()
 
+#regard si il y a une suite de 0 de la taille 'required' dans 'string'
 def wrong_hash(string,required):
     nb_zero = 0
     for c in string:
