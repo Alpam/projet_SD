@@ -24,7 +24,3 @@ def m_builder(nb_op,exp,tra,dest=None,value=None):
     return message
 
 
-if __name__ == '__main__' :
-    print(m_builder(0,[1,1],'C'))
-    print(m_builder(0,[1,0],'T',[2,1],14))
-

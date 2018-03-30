@@ -25,10 +25,10 @@ class BlocChain:
         self.listope = listope
         self.nonce = ""
 
-    def bc_to_str(self):
+    def __str__(self):
         return self.creator + self.depth + self.mhash + \
                self.nbope + self.listope + self.nonce
 
-if __name__ == '__main__' :
-    bc = BlocChain("N0","0","","0","")
-    print(bc.bc_to_str())
+    def __add__(self, obj):
+        return str(self)+':'+str(obj)
+

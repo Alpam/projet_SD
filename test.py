@@ -17,9 +17,17 @@ from queue import *
 from participant_node import p_manager as pm
 from participant_node import p_node as pn
 from participant_node import ope_generator as og
+from bloc_node import bloc_chain as bc
 
 if __name__ == '__main__' :
-    print("::::test p_node::::")
+    print("::::test bloc chaine::::")
+    bl   = bc.BlocChain("N0","0","","0","")
+    bll  = bc.BlocChain("N0","1","hash","0","154")
+    blll = bc.BlocChain("N0","2","hash2","0","155554")
+    print(bl)
+    r=bl+(bll+blll)
+    print(r)
+    print("\n::::test p_node::::")
     life = pn.p_random(1)
     print(life)
     while(life):

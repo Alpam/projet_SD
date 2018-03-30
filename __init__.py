@@ -14,4 +14,3 @@
 
 #!/usr/bin/python3
 
-from praticipant_node import m_operation
