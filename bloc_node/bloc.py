@@ -14,7 +14,7 @@
 
 #!/usr/bin/python3
 
-class BlocChain:
+class Bloc:
 
     def __init__(self, creator, depth, mhash, nbope, listope):
 
@@ -31,4 +31,5 @@ class BlocChain:
 
     def __add__(self, obj):
         return str(self)+':'+str(obj)
+
 
