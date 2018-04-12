@@ -20,15 +20,19 @@ from threading import Thread
 
 class HashFactory(Thread):
 
-    def __init__(self,stop_flag):
+    def __init__(self,stop_flag,string,required,retour,queue):
         Thread.__init__(self)
         #stop_flag ne doit pas être un type natif mais un objet
         self.sf = stop_flag
+        self.string = string
+        self.required = required
+        self.retour = retour
+        self.q = queue
 
-    def run(self,string,required,flag):
+    def run(self):
         work = True
         while(work):
-            if(self.sf):
+            if(self.sf[0]):
                 return False
             nonce = ""
             i=32
@@ -36,11 +40,14 @@ class HashFactory(Thread):
                 i -= 1
                 c = random.randint(0,255)
                 nonce = nonce+chr(c)
-            h = generate_hash(string+nonce)
-            work = wrong_hash(h,required)
-        if(self.sf):
+            h = generate_hash(self.string+nonce)
+            work = wrong_hash(h,self.required)
+        if(self.sf[0]):
             return False
-        return h,nonce
+        self.retour[0] = h
+        self.retour[1] = nonce
+        self.q.put('%G')
+        return True
 
     #genere un hash à partir d'une string, retourne une string
     def generate_hash(self,string):

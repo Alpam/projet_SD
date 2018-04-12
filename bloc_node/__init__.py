@@ -14,5 +14,8 @@
 
 #!/usr/bin/python3
 
-from . import bloc_chain
+from . import bloc
 from . import b_pow
+from .participant_node import p_manager
+from .participant_node import p_node
+from .participant_node import ope_generator

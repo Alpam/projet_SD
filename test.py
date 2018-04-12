@@ -14,16 +14,16 @@
 
 #!/usr/bin/python3
 from queue import *
-from participant_node import p_manager as pm
-from participant_node import p_node as pn
-from participant_node import ope_generator as og
-from bloc_node import bloc_chain as bc
+from bloc_node import p_manager as pm
+from bloc_node import p_node as pn
+from bloc_node import ope_generator as og
+from bloc_node import bloc as bc
 
 if __name__ == '__main__' :
     print("::::test bloc chaine::::")
-    bl   = bc.BlocChain("N0","0","","0","")
-    bll  = bc.BlocChain("N0","1","hash","0","154")
-    blll = bc.BlocChain("N0","2","hash2","0","155554")
+    bl   = bc.Bloc("N0","0","","0","")
+    bll  = bc.Bloc("N0","1","hash","0","154")
+    blll = bc.Bloc("N0","2","hash2","0","155554")
     print(bl)
     r=bl+(bll+blll)
     print(r)
@@ -43,8 +43,16 @@ if __name__ == '__main__' :
     print(pn.p_dstnt([b],b))
 
     print("\n::::test m_operation::::")
-    print(og.m_builder(0,[1,1],'C'))
-    print(og.m_builder(0,[1,0],'T',[2,1],14))
+    m1 = og.m_builder(0,[1,0],'T',[2,1],14)
+    m2 = og.m_builder(0,[1,1],'C')
+    print(m1)
+    print(m2)
+    print(og.m_type(m1))
+    print(og.m_type(m2))
+    print(og.m_origin(m1))
+    print(og.m_origin(m2))
+    print(og.m_destination(m1))
+    print(og.m_destination(m2))
 
     print("\n::::test p_manager::::")
     queue = Queue()
