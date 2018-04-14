@@ -89,6 +89,7 @@ if __name__ == '__main__' :
         print(m4)
         m4.str_injection(m3.translation())
         print(m4)
+
     else:
         print("\tnot ask")
     print("\n::::test p_manager::::")
