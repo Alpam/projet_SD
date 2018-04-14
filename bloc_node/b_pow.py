@@ -14,20 +14,22 @@
 
 #!/usr/bin/python3
 
+from .participant_node import ope_generator as og
 import random
 import hashlib
 from threading import Thread
 
 class HashFactory(Thread):
 
-    def __init__(self,stop_flag,string,required,retour,queue):
+    def __init__(self,stop_flag,string,required,depth,host,queue):
         Thread.__init__(self)
         #stop_flag ne doit pas être un type natif mais un objet
         self.sf = stop_flag
         self.string = string
         self.required = required
-        self.retour = retour
         self.q = queue
+        self.hst = host
+        self.d = depth
 
     def run(self):
         work = True
@@ -40,13 +42,12 @@ class HashFactory(Thread):
                 i -= 1
                 c = random.randint(0,255)
                 nonce = nonce+chr(c)
-            h = generate_hash(self.string+nonce)
-            work = wrong_hash(h,self.required)
+            h = self.generate_hash(self.string+nonce)
+            work = self.wrong_hash(h,self.required)
         if(self.sf[0]):
             return False
-        self.retour[0] = h
-        self.retour[1] = nonce
-        self.q.put('%G')
+        m = og.m_builder(self.d,[None,self.hst],'G',nonce,h)
+        self.q.put(m)
         return True
 
     #genere un hash à partir d'une string, retourne une string
