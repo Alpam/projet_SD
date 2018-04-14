@@ -18,6 +18,7 @@ from bloc_node import p_manager as pm
 from bloc_node import p_node as pn
 from bloc_node import ope_generator as og
 from bloc_node import bloc as bc
+from bloc_node import b_pow as bp
 
 if __name__ == '__main__' :
     print("::::test bloc chaine::::")
@@ -27,6 +28,19 @@ if __name__ == '__main__' :
     print(bl)
     r=bl+(bll+blll)
     print(r)
+
+    print("\n::::test hash::::")
+    rep=input("oui(o)/non(n)")
+    if(rep == 'o'):
+        qh = Queue()
+        sf = []
+        hf = bp.HashFactory([False],str(bll),2,0,0,qh)
+        hf.start()
+        hf.join()
+        rtr = qh.get()
+        print(rtr)
+        print(og.m_reader(rtr))
+
     print("\n::::test p_node::::")
     life = pn.p_random(1)
     print(life)
@@ -45,14 +59,13 @@ if __name__ == '__main__' :
     print("\n::::test m_operation::::")
     m1 = og.m_builder(0,[1,0],'T',[2,1],14)
     m2 = og.m_builder(0,[1,1],'C')
+    m3 = og.m_builder(0,[1,5],'M')
     print(m1)
     print(m2)
-    print(og.m_type(m1))
-    print(og.m_type(m2))
-    print(og.m_origin(m1))
-    print(og.m_origin(m2))
-    print(og.m_destination(m1))
-    print(og.m_destination(m2))
+    print(m3)
+    print(og.m_reader(m1))
+    print(og.m_reader(m2))
+    print(og.m_reader(m3))
 
     print("\n::::test p_manager::::")
     queue = Queue()
@@ -69,3 +82,4 @@ if __name__ == '__main__' :
         l_ope.append(tmp)
     for i in l_ope:
         print(i)
+        print(og.m_reader(i))
