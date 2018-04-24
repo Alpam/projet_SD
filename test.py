@@ -33,9 +33,9 @@ if __name__ == '__main__' :
     print(t)
     print("::::test bloc chaine::::")
     if(t[0]):
-        bl   = bc.Bloc("N0","0","","0","")
-        bll  = bc.Bloc("N0","1","hash","0","154")
-        blll = bc.Bloc("N0","2","hash2","0","155554")
+        bl   = bc.Bloc("N0","0")
+        bll  = bc.Bloc("N0","1","hash","154")
+        blll = bc.Bloc("N0","2","hash2","155554")
         print(bl)
         r=bl+(bll+blll)
         print(r)
@@ -50,7 +50,6 @@ if __name__ == '__main__' :
         hf.join()
         rtr = qh.get()
         print(rtr)
-        print(og.m_reader(rtr))
     else:
         print("\tnot ask")
     print("\n::::test p_node::::")
@@ -73,6 +72,7 @@ if __name__ == '__main__' :
     print("\n::::test m_operation::::")
     if(t[3]):
         m1 = og.Operation('T',10,[0,1],[2,1],None,None,42)
+        m1b= og.Operation('T',10,[0,1],[2,1],None,None,42)
         m2 = og.Operation('C',0,[1,0])
         m3 = og.Operation()
         m3.str_injection("G%24%0%hash%nonce%nonce%nonce")
@@ -89,7 +89,8 @@ if __name__ == '__main__' :
         print(m4)
         m4.str_injection(m3.translation())
         print(m4)
-
+        print("doit etre True : " + str(m1==m1b))
+        print("doit etre False : " + str(m1==m2))
     else:
         print("\tnot ask")
     print("\n::::test p_manager::::")
@@ -108,6 +109,5 @@ if __name__ == '__main__' :
             l_ope.append(tmp)
         for i in l_ope:
             print(i)
-            print(og.m_reader(i))
     else:
         print("\tnot ask")
