@@ -46,7 +46,7 @@ class HashFactory(Thread):
             work = self.wrong_hash(h,self.required)
         if(self.sf[0]):
             return False
-        m = og.m_builder(self.d,[None,self.hst],'G',nonce,h)
+        m = og.Operation('G',self.d,self.hst,None,h,nonce)
         self.q.put(m)
         return True
 

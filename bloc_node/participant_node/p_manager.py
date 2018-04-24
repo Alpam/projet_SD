@@ -16,7 +16,7 @@
 
 from threading import Thread, Semaphore
 from . import p_node as pn
-from .m_operation import ope_generator as mg
+from .m_operation import ope_generator as og
 
 
 class Participant(Thread):
@@ -36,7 +36,7 @@ class Participant(Thread):
     def run(self):
         counter = 0
         self.dest.append(self.address)
-        message = mg.m_builder(counter,self.address,'C')
+        message = og.Operation('C',counter,self.address)
         self.q.put(message)
         life = pn.p_random(self.lf)
         ctest = self.test
@@ -53,7 +53,8 @@ class Participant(Thread):
             #pour le faire attendre indéfiniment initialiser test[0] sur -1
             if(not(dstnt)):
                 if(not(ctest)):
-                    message = mg.m_builder(counter,self.address,'E',None,self.test)
+                    message = og.Operation('E',counter,self.address \
+                                          ,None,"","",self.test)
                     self.q.put(message)
                     break
                 else :
@@ -63,10 +64,11 @@ class Participant(Thread):
                     life += 1
                     continue
             ctest = self.test
-            message = mg.m_builder(counter,self.address,'T',dstnt,v)
+            message = og.Operation('T',counter,self.address,dstnt \
+                                  ,"","",v)
             self.q.put(message)
         counter += 1
-        message = mg.m_builder(counter,self.address,'D')
+        message = og.Operation('D',counter,self.address)
         self.q.put(message)
         self.dest.remove(self.address)
         self.l_prt.remove(self)

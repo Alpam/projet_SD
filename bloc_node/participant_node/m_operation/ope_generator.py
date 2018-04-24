@@ -17,16 +17,16 @@
 class Operation:
 #il faudrait rajouter des exceptions pour gérer les strings/args invalides
 
-    def __init__(self,mt=None,i=None,org=None,dst=None,mh=None, \
-                nc=None,vl=None,tm=None):
+    def __init__(self,mt=None,i=None,org=None,dst=None,mh="", \
+                nc="",vl=None,tm=None):
 
             self.m_type = mt
+            self.ident  = i
             self.origin = org
             self.dstntn = dst
             self.m_hash = mh
             self.nonce  = nc
             self.value  = vl
-            self.ident  = i
             self.transmitter = tm
 
     def str_injection(self, string):
@@ -95,4 +95,16 @@ class Operation:
             if(self.m_type == 'E'):
                 rtr += '%' + str(self.value)
         return rtr
+
+    def __eq__(self, obj):
+        if(type(obj) == type(self)):
+            if (self.m_type == obj.m_type and \
+                self.ident  == obj.ident):
+                if(self.m_type == 'G' and \
+                   self.origin == obj.origin):
+                    return True
+                elif(self.origin[0] == obj.origin[0] and\
+                     self.origin[1] == obj.origin[1]):
+                    return True
+        return False
 
