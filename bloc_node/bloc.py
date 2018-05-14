@@ -18,13 +18,13 @@ from .participant_node import ope_generator
 
 class Bloc:
 
-    def __init__(self, creator, depth, mhash="", nonce="", nbope=0, listope=list()):
+    def __init__(self, creator, depth, mhash="", nonce="", nbope=0):
 
         self.creator = creator
         self.depth = depth
         self.mhash = mhash
         self.nbope = nbope
-        self.listope = listope
+        self.listope = list()
         self.nonce = nonce
 
     def __str__(self):
@@ -35,6 +35,14 @@ class Bloc:
                + "Number of Operations : " + str(self.nbope) + '\n'
         for l in self.listope :
             string += str(l) + '\n'
+        return string
+
+    def translation(self):
+        string = self.creator + ' ' + str(self.depth) + ' ' \
+                 + str(self.nbope) + ' ' + self.mhash + ' '       \
+                 + str(self.nonce) + ' '
+        for l in self.listope :
+            string += l.translation() + ' '
         return string
 
     def __add__(self, obj):

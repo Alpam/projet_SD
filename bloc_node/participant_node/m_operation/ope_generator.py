@@ -14,11 +14,39 @@
 
 #!/usr/bin/python3
 
+class Missive:
+
+    def __init__(self):
+        self.m_type = ""
+        self.str_obj = ""
+        self.transmitter = ""
+
+    def str_injection(self,string):
+        self.m_type = string[0]
+        i=2
+        while(i < len(string) and string[i]!=' '):
+            self.transmitter += string[i]
+            i+=1
+        i+=1
+        while(i < len(string)):
+            self.str_obj += string[i]
+            i+=1
+    
+    def obj_injection(self,m_type,string,transmitter):
+        self.m_type = m_type
+        self.str_obj = string
+        self.transmitter = transmitter
+
+    def translation(self):
+        string = self.m_type + ' '      \
+               + self.transmitter + ' ' \
+               + self.str_obj
+        return string
+
 class Operation:
 #il faudrait rajouter des exceptions pour gérer les strings/args invalides
-
     def __init__(self,mt=None,i=None,org=None,dst=None,mh="", \
-                nc="",vl=None,tm=None):
+                nc="",vl=None):
 
             self.m_type = mt
             self.ident  = i
@@ -27,7 +55,6 @@ class Operation:
             self.m_hash = mh
             self.nonce  = nc
             self.value  = vl
-            self.transmitter = tm
 
     def str_injection(self, string):
         self.m_type = None
@@ -41,7 +68,7 @@ class Operation:
         foo = []
         tmp = ""
         for c in string :
-            if(c!='%'):
+            if(c!=' '):
                 tmp += c
             else:
                 foo.append(tmp)
@@ -59,7 +86,7 @@ class Operation:
             self.nonce  = foo[4]
             i = 5
             while(i<len(foo)):
-                self.nonce += '%' + foo[i]
+                self.nonce += ' ' + foo[i]
                 i += 1
         elif(self.m_type == 'C' or self.m_type == 'D' or self.m_type == 'E'):
             self.origin = [int(foo[2]),int(foo[3])]
@@ -84,16 +111,16 @@ class Operation:
 
     def translation(self):
         rtr = ""
-        rtr += self.m_type + '%' + str(self.ident) + '%'
+        rtr += self.m_type + ' ' + str(self.ident) + ' '
         if(self.m_type == 'T'):
-            rtr += str(self.origin[0]) + '%' + str(self.origin[1]) + '%' + \
-                   str(self.dstntn[0]) + '%' + str(self.dstntn[1]) + '%' + str(self.value)
+            rtr += str(self.origin[0]) + ' ' + str(self.origin[1]) + ' ' + \
+                   str(self.dstntn[0]) + ' ' + str(self.dstntn[1]) + ' ' + str(self.value)
         elif(self.m_type == 'G'):
-            rtr += str(self.origin) + '%' + self.m_hash + '%' + self.nonce
+            rtr += str(self.origin) + ' ' + self.m_hash + ' ' + self.nonce
         elif(self.m_type == 'C' or self.m_type == 'D' or self.m_type == 'E'):
-            rtr += str(self.origin[0]) + '%' + str(self.origin[1])
+            rtr += str(self.origin[0]) + ' ' + str(self.origin[1])
             if(self.m_type == 'E'):
-                rtr += '%' + str(self.value)
+                rtr += ' ' + str(self.value)
         return rtr
 
     def __eq__(self, obj):
