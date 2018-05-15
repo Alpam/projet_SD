@@ -1,7 +1,7 @@
 #
 ############################################################
 #
-#        Filename:
+#        Filename:b_pow.py
 #
 #     Description:
 #
@@ -9,6 +9,7 @@
 #  Python Version:  3.x
 #
 #          Author:  Paul Robin , paul.robin@etu.unistra.fr
+#                   Amarin Hutt, amarinhutt@hotmail.fr
 #
 ############################################################
 
@@ -21,35 +22,43 @@ from threading import Thread
 
 class HashFactory(Thread):
 
-    def __init__(self,stop_flag,string,required,depth,host,queue):
+    def __init__(self,string,required,depth,host,queue):
         Thread.__init__(self)
         #stop_flag ne doit pas être un type natif mais un objet
-        self.sf = stop_flag
         self.string = string
         self.required = required
         self.q = queue
         self.hst = host
         self.d = depth
+        self.stop = False
 
     def run(self):
         work = True
         while(work):
-            if(self.sf[0]):
-                return False
+            if(self.stop):
+                break
             nonce = ""
             i=32
             while(i):
+                if(self.stop):
+                    return
                 i -= 1
                 c = random.randint(0,255)
+                if(chr(c) == '\n' or chr(c) == '\0' or \
+                   chr(c) == ':'  or chr(c) == ';' or chr(c) == ' '):
+                    i+=1
+                    continue
                 nonce = nonce+chr(c)
             h = self.generate_hash(self.string+nonce)
             work = self.wrong_hash(h,self.required)
-        if(self.sf[0]):
-            return False
         m = og.Operation('G',self.d,self.hst,None,h,nonce)
+        if(self.stop):
+            return
         self.q.put(m)
-        return True
+        return
 
+    def exit(self):
+        self.stop = True
     #genere un hash à partir d'une string, retourne une string
     def generate_hash(self,string):
         string = string.encode('utf-8')

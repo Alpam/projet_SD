@@ -1,7 +1,7 @@
 #
 ############################################################
 #
-#        Filename:
+#        Filename:p_manager.py
 #
 #     Description:
 #
@@ -9,6 +9,7 @@
 #  Python Version:  3.x
 #
 #          Author:  Paul Robin , paul.robin@etu.unistra.fr
+#                   Amarin Hutt, amarinhutt@hotmail.fr
 #
 ############################################################
 
@@ -35,7 +36,6 @@ class Participant(Thread):
 
     def run(self):
         counter = 0
-        self.dest.append(self.address)
         message = og.Operation('C',counter,self.address)
         self.q.put(message)
         life = pn.p_random(self.lf)
@@ -70,7 +70,6 @@ class Participant(Thread):
         counter += 1
         message = og.Operation('D',counter,self.address)
         self.q.put(message)
-        self.dest.remove(self.address)
         self.l_prt.remove(self)
         self.sem.release()
         return

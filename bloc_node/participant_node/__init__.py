@@ -9,6 +9,7 @@
 #  Python Version:  3.x
 #
 #          Author:  Paul Robin , paul.robin@etu.unistra.fr
+#                   Amarin Hutt, amarinhutt@hotmail.fr
 #
 ############################################################
 

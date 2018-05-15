@@ -1,7 +1,7 @@
 #
 ############################################################
 #
-#        Filename:
+#        Filename:ope_generator.py
 #
 #     Description:
 #
@@ -9,6 +9,7 @@
 #  Python Version:  3.x
 #
 #          Author:  Paul Robin , paul.robin@etu.unistra.fr
+#                   Amarin Hutt, amarinhutt@hotmail.fr
 #
 ############################################################
 
@@ -20,6 +21,11 @@ class Missive:
         self.m_type = ""
         self.str_obj = ""
         self.transmitter = ""
+
+    def __str__(self):
+        rtr = "Type : "+self.m_type+" L_hop : "+self.transmitter\
+             +" Str_OBJ: " +self.str_obj
+        return rtr
 
     def str_injection(self,string):
         self.m_type = string[0]
@@ -65,36 +71,32 @@ class Operation:
         self.value  = None
         self.ident  = None
         self.transmitter = None
-        foo = []
-        tmp = ""
-        for c in string :
-            if(c!=' '):
-                tmp += c
-            else:
-                foo.append(tmp)
-                tmp = ""
-        foo.append(tmp)
-        self.m_type = foo[0]
-        self.ident  = int(foo[1])
-        if(self.m_type == 'T'):
-            self.origin = [int(foo[2]),int(foo[3])]
-            self.dstntn = [int(foo[4]),int(foo[5])]
-            self.value  = int(foo[6])
-        elif(self.m_type == 'G'):
-            self.origin = int(foo[2])
-            self.m_hash = foo[3]
-            self.nonce  = foo[4]
-            i = 5
-            while(i<len(foo)):
-                self.nonce += ' ' + foo[i]
-                i += 1
-        elif(self.m_type == 'C' or self.m_type == 'D' or self.m_type == 'E'):
-            self.origin = [int(foo[2]),int(foo[3])]
-            if(self.m_type == 'E'):
-                self.value = [int(foo[4])]
+        l = string.split(":")
+        self.m_type = l[0]
+        self.ident  = int(l[1])
+        if(string[0]=='T'):
+            self.origin = []
+            self.origin.append(int(l[2]))
+            self.origin.append(int(l[3]))
+            self.dstntn = []
+            self.dstntn.append(int(l[4]))
+            self.dstntn.append(int(l[5]))
+            self.value = int(l[6])
+        elif(string[0]=='G'):
+            self.origin = int(l[2])
+            self.m_hash = l[3]
+            self.nonce  = l[4]
+        elif(string[0]=='D' or string[0]=='C' or string[0]=='E'):
+            self.origin = []
+            self.origin.append(int(l[2]))
+            self.origin.append(int(l[3]))
+
+            if(string[0]=='E'):
+                self.value = int(l[6])
         return
 
     def __str__(self):
+        
         rtr = ""
         rtr += "Type :" + self.m_type + " Id :" + str(self.ident)
         if(self.m_type == 'T'):
@@ -102,7 +104,11 @@ class Operation:
                    " Destination :" + str(self.dstntn[0]) + "-" + str(self.dstntn[1]) + \
                    " Valeur :"+ str(self.value)
         elif(self.m_type == 'G'):
-            rtr += " Origine :" + str(self.origin) + "\nHash :" + self.m_hash + "\nNonce:" + self.nonce
+            rtr += " Origine :" + str(self.origin) + "\nHash :" \
+                   + self.m_hash + "\nNonce:"
+            for x in self.nonce:
+                rtr += str(ord(x)) +':'
+            rtr += '\n'
         elif(self.m_type == 'C' or self.m_type == 'D' or self.m_type == 'E'):
             rtr += " Origine :" + str(self.origin[0]) + "-" + str(self.origin[1])
             if(self.m_type == 'E'):
@@ -111,16 +117,16 @@ class Operation:
 
     def translation(self):
         rtr = ""
-        rtr += self.m_type + ' ' + str(self.ident) + ' '
+        rtr += self.m_type + ':' + str(self.ident) + ':'
         if(self.m_type == 'T'):
-            rtr += str(self.origin[0]) + ' ' + str(self.origin[1]) + ' ' + \
-                   str(self.dstntn[0]) + ' ' + str(self.dstntn[1]) + ' ' + str(self.value)
+            rtr += str(self.origin[0]) + ':' + str(self.origin[1]) + ':' + \
+                    str(self.dstntn[0]) + ':' + str(self.dstntn[1]) + ':' + str(self.value)
         elif(self.m_type == 'G'):
-            rtr += str(self.origin) + ' ' + self.m_hash + ' ' + self.nonce
+            rtr += str(self.origin) + ':' + self.m_hash + ':' + self.nonce
         elif(self.m_type == 'C' or self.m_type == 'D' or self.m_type == 'E'):
-            rtr += str(self.origin[0]) + ' ' + str(self.origin[1])
+            rtr += str(self.origin[0]) + ':' + str(self.origin[1])
             if(self.m_type == 'E'):
-                rtr += ' ' + str(self.value)
+                rtr += ':' + str(self.value)
         return rtr
 
     def __eq__(self, obj):
