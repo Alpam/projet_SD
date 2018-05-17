@@ -116,8 +116,9 @@ def core_node(my_n,ip,port,init_particpant,init_neighbours,queue):
                     l_ope.append(n_ope)
                     m=None
                 elif(n_ope.m_type == "C"):
-                    l_ope.append(n_ope)
-                    destination.append([n_ope.origin[0],n_ope.origin[1]])
+                    if(is_not_in_dest(n_ope,destination)):
+                        l_ope.append(n_ope)
+                        destination.append([n_ope.origin[0],n_ope.origin[1]])
                     m=None
                 elif(n_ope.m_type == "D"):
                     l_ope.append(n_ope)
@@ -128,7 +129,7 @@ def core_node(my_n,ip,port,init_particpant,init_neighbours,queue):
                     try:
                         destination.remove([n_ope.origin[0],n_ope.origin[1]])
                     except ValueError:
-                        print("esquive "+name+str(n_ope.origin)+'|'+str(destination)+"frm"+last)
+                        pass
                     m=None
                 elif(n_ope.m_type == "E"):
                     l_ope.append(n_ope)
@@ -264,13 +265,26 @@ def core_node(my_n,ip,port,init_particpant,init_neighbours,queue):
         #cas de terminaison
         if(len(l_ope)==0 and len(destination)==0):
             pw.exit()
-            bridge.t.close()
+            try:
+                bridge.t.close()
+            except OSError:
+                pass
             q.put("end")
             return
     pw.exit()
-    bridge.t.close()
+    try:
+        bridge.t.close()
+    except OSError:
+        pass
     q.put("end")
     return
+
+def is_not_in_dest(ope,destination):
+    for d in destination:
+        if(ope.origin[0]==d[0] and\
+           ope.origin[1]==d[1]):
+            return False
+    return True
 
 #transaction à depth_max-3, on la rend effective
 def validation_transaction(bl, d):
