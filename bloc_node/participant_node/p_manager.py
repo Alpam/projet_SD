@@ -19,7 +19,19 @@ from threading import Thread, Semaphore
 from . import p_node as pn
 from .m_operation import ope_generator as og
 
-
+"""
+    représente un participant
+    queue : est la file principale sur laquel il postera une operation
+    dest : liste des destinations connues
+    host : nom du node auquel il est rattaché
+    mtrcl : son nom dans ce node
+    sem : semaphore pour stoper le decompte des particpants courants
+    l_prt : liste des particpants du Manager
+    lf : temps de vie (=nbr de transaction autorisées) (si liste valuer minimale/maximale)
+    mm_tr : valeur minimale/maximale des transaction
+    mm_slp : valeur minimale/maximale du temps entre les transactions
+    test : liste donnant le nombre de teste max et le temps d'attente entre 2
+"""
 class Participant(Thread):
     def __init__(self, queue, dest, host, mtrcl, sem, l_prt, lf, mm_tr, mm_slp, test):
         Thread.__init__(self)
@@ -73,7 +85,19 @@ class Participant(Thread):
         self.l_prt.remove(self)
         self.sem.release()
         return
-
+"""
+    cette classe est le Manager : il lance les particpants d'un node
+    lorsqu'il a lancé tous les particpants s'arrête sans attendre la
+    fin de ceux qu'il vient de lancer
+    queue : file principale
+    host : node qui la lancé
+    max_p : maximum de participants simultanés
+    tot_p : maximum de participants pouvant exister
+    lf : nbr de transaction maximale (si une liste minimale/maximale)
+    mm_tr : valeur minimale/maximale des transaction
+    mm_slp : valeur minimale/maximale du temps entre les transactions
+    test : liste donnant le nombre de teste max et le temps d'attente entre 2
+"""
 class Manager(Thread):
     #nb : float('inf') represente l'infinit, marche aussi pour des comparaisons d'int
     def __init__(self, queue, dest, host, max_p = 50, tot_p = float('inf'), \

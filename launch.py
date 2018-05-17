@@ -15,17 +15,50 @@
 
 #!/usr/bin/python3
 
+import csv
 import os
+import sys
 
-# nom serveur, ip, port, nbr participant simultané, nbr total de participant, nbr de transaction par particpant, nom voisin, port voisin, nom voisin, port voisin
-i = os.fork()
-if(not(i)):
-    os.system("python3 master_node.py 0 localhost 18886 2 4 2 1 18887 2 18888")
-else:
-    j = os.fork()
-    if(not(j)):
-        os.system("python3 master_node.py 1 localhost 18887 2 4 2 2 18888 0 18886")
-    else:
-        os.system("python3 master_node.py 2 localhost 18888 2 4 2 1 18887 0 18886")
-
+if(len(sys.argv)<2):
+    print("donner fichier en arg")
+    quit()
+with open(sys.argv[1],'r') as csvfile :
+    s = []
+    i = 0
+    r = csv.reader(csvfile, delimiter=' ',quotechar='\n',quoting=csv.QUOTE_MINIMAL)
+    #une ligne : nbr participant simultané, nbr total de participant, nbr de transaction par particpant, nom voisin, .....
+    l_arg = []
+    for l in r:
+        if(l == []):
+            continue
+        n_arg = ""
+        n_arg += str(i)+' '\
+                +"localhost"+' '\
+                +str(i+17880)+' '\
+                +l[0]+' '\
+                +l[1]+' '\
+                +l[2]
+        j=3
+        while(j<len(l)):
+            if(i==int(l[j])):
+                print("erreur voisinage pour "+str(i))
+                quit()
+            n_arg +=' '+ l[j]+' '+ str(17880 + int(l[j]))
+            j+=1
+        l_arg.append(n_arg)
+        i+=1
+    pid=[]
+    for l in l_arg :
+        pmn = "python3 master_node.py "
+        pmn += l
+        print(pmn)
+        i = os.fork()
+        pid.append(i)
+        if(not(i)):
+            os.system(pmn)
+            quit()
+    if(not(i)):
+        for p in pid:
+            os.waitpid(p)
+    
 

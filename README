@@ -3,7 +3,7 @@ Paul Robin
 
 Projet de SD
 
-pour lancer utiliser "python3 launch.py"
+pour lancer utiliser "python3 launch.py ****.ini"
 /!\ avant de lancer vérifier que rpyc est bien installé
 sinon utilisé pip3 pour l'installer (mode local si vous n'avez pas les droits)
 

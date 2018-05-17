@@ -16,9 +16,10 @@
 #!/usr/bin/python3
 
 from .participant_node import ope_generator as og
-
+"""
+    classe représentant un bloc
+"""
 class Bloc:
-
     def __init__(self, creator, depth, mhash="", nonce="", nbope=0):
         self.creator = creator
         self.depth = depth
@@ -40,6 +41,7 @@ class Bloc:
             string += str(l) + '\n'
         return string
 
+    #injection d'une str dans l'objet (il est ecrasé)
     def str_injection(self, string):
         l = string.split('\n')
         self.creator = l[0]
@@ -53,6 +55,7 @@ class Bloc:
                 o.str_injection(ope)
                 self.listope.append(o)
 
+    #traduction de l'objet en une str formatée
     def translation(self):
         string = self.creator + '\n' + str(self.depth) + '\n' \
                  + str(self.nbope) + '\n' + self.mhash + '\n' \

@@ -21,10 +21,8 @@ import hashlib
 from threading import Thread
 
 class HashFactory(Thread):
-
     def __init__(self,string,required,depth,host,queue):
         Thread.__init__(self)
-        #stop_flag ne doit pas être un type natif mais un objet
         self.string = string
         self.required = required
         self.q = queue
@@ -32,6 +30,7 @@ class HashFactory(Thread):
         self.d = depth
         self.stop = False
 
+    #calcule d'un hash valide
     def run(self):
         work = True
         while(work):
@@ -57,8 +56,10 @@ class HashFactory(Thread):
         self.q.put(m)
         return
 
+    #permet d'arreter le thread avec le flag self.stop
     def exit(self):
         self.stop = True
+
     #genere un hash à partir d'une string, retourne une string
     def generate_hash(self,string):
         string = string.encode('utf-8')
